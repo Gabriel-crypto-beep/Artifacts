@@ -1,0 +1,35 @@
+name: Upload manifest.json to artifacts_bucket on GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  CI_artifacts_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}  # Ensure this secret is set in GitHub
+          project_id: ${{ secrets.GCP_PROJECT_ID }}      # Ensure this secret is set in GitHub
+          
+      - name: Upload JSON file to GCS
+        run: |
+          # Check if the JSON file exists
+          if [ ! -f "path/to/your/file.json" ]; then
+            echo "Error: JSON file not found at path/to/your/file.json"
+            exit 1
+          fi
+          
+          gsutil cp "path/to/your/file.json" "gs://${{ secrets.GCS_BUCKET }}/path/in/bucket/file.json"
+          echo "JSON file uploaded to gs://${{ secrets.GCS_BUCKET }}/path/in/bucket/file.json"
+
+        env:
+          CLOUD_SDK_VERSION: "latest"
+
