@@ -22,12 +22,12 @@ jobs:
       - name: Upload JSON file to GCS
         run: |
           # Check if the JSON file exists
-          if [ ! -f "Utenti/gabrielguevara/Scrivania/VsCode/snowflake/target/manifest.json" ]; then
-            echo "Error: JSON file not found at Utenti/gabrielguevara/Scrivania/VsCode/snowflake/target/manifest.json"
+          if [ ! -f "snowflake/target/manifest.json" ]; then
+            echo "Error: JSON file not found at snowflake/target/manifest.json"
             exit 1
           fi
           
-          gsutil cp "Utenti/gabrielguevara/Scrivania/VsCode/snowflake/target/manifest.json" "gs://${{ secrets.GCS_BUCKET }}"
+          gsutil cp "snowflake/target/manifest.json" "gs://${{ secrets.GCS_BUCKET }}"
           echo "JSON file uploaded to gs://${{ secrets.GCS_BUCKET }}"
 
         env:
